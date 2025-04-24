@@ -11,6 +11,5 @@ def dft( x: List[float], y:List[float] ) :
     angles = np.angle(fft_coeffs)
 
     idx = magns.argsort()[::-1]
-    freqs = idx - len(x)//2
 
-    return magns[idx], angles[idx], freqs
+    return magns, angles, idx 
