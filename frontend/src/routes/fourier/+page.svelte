@@ -21,8 +21,8 @@
 			<input type="range" bind:value={freqs} min="1" max="50" step="1" />
 		</div>
 		<div class="control">
-			<h3>{dtheta} dθ/frame rads </h3>
-			<input type="range" bind:value={dtheta} min="0.0001" max="0.05" step="0.0001" />
+			<h3>{dtheta*60} dθ/sec rads </h3>
+			<input type="range" bind:value={dtheta} min="0.0001" max="0.0525" step="0.0001" />
 		</div>
 
 	</div>

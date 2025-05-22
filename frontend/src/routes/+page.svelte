@@ -1,9 +1,11 @@
 <script lang="ts">
-	const msg: string = 'hello';
+	import { Canvas } from '@threlte/core';
+	import Scene from './tiles/Scene.svelte';
+		
 </script>
 
 <nav>
-	<div id="nav-outer-container">
+	<div id="navbar-outer-container">
 		<div id="name-item">
 			<span>Yiorgos Panagiotopoulos</span>
 		</div>
@@ -17,21 +19,32 @@
 	</div>
 </nav>
 
-<p>{msg}</p>
+<div class="canvas-container">
+	<Canvas>
+		<Scene />
+	</Canvas>
+</div>
 
 <style>
 	@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
 
 	* {
-		font-family: "Newsreader", serif;
+		font-family: 'Newsreader', serif;
 	}
 
-	#nav-outer-container {
+	nav {
+		position: fixed;
+		z-index: 1000;
+		width: 100vw;
+		height: 0;
+	}
+
+	#navbar-outer-container {
+		background-color: rgba(255, 255, 255, 0.9);
 		display: flex;
 		justify-content: left;
 		align-items: center;
 		width: 70%;
-		height: 5rem;
 
 		margin-top: 3em;
 		margin-left: auto;
@@ -39,9 +52,13 @@
 
 		padding-right: 2rem;
 		padding-left: 2rem;
+		padding-top: 1em;
+		padding-bottom: 1em;
 
-		border: 2px solid rgba(0,0,0, 0.5);
+		border: 2px solid rgba(0, 0, 0, 0.9);
 		border-radius: 1em;
+
+		box-shadow: rgba(0, 0, 0, 0.9) 10px 10px 1px 1px;
 	}
 
 	#name-item {
@@ -49,20 +66,20 @@
 		display: flex;
 		justify-content: left;
 		font-size: 3rem;
-		padding-top:0.3rem;
+		padding-top: 0.3rem;
 	}
 
 	#links {
 		display: flex;
-		justify-content:center;
-		align-items:center;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.nav-link {
 		font-size: 1.5rem;
 	}
-	
-	.link-sep{
+
+	.link-sep {
 		margin-left: 0.5rem;
 		margin-right: 0.5rem;
 		font-size: 2rem;
@@ -70,23 +87,33 @@
 	}
 
 	.nav-link > a {
-		padding:1rem;
-		padding-top:0.5rem;
-		padding-bottom:0.3rem;
+		padding: 1rem;
+		padding-top: 0.5rem;
+		padding-bottom: 0.3rem;
 
-		border:1px solid rgba(0,0,0,0);
+		border: 1px solid rgba(0, 0, 0, 0);
 		color: black;
 		text-decoration: none;
 	}
 
-
-	a:hover{
+	a:hover {
 		border: 1px solid red;
 		border-radius: 5px;
-		transition:border 1s;
-	 }
+		transition: border 1s;
+	}
 
+	.canvas-container {
+		position: absolute;
+		margin: 0;
+		width: 100%;
+		height: 100%;
+		position: fixed;
+	}
 
-
-
+	:global(html),
+	:global(body) {
+		background-color: lime;
+		margin: 0;
+		padding: 0;
+	}
 </style>

@@ -194,7 +194,7 @@
 					)}
 
 					{#each positions.slice(0, -1) as { x, y }, idx}
-						{#if !isNaN(x) && !isNaN(positions[idx+1].x)}
+						{#if !isNaN(x) && !isNaN(positions[idx + 1].x)}
 							<line
 								x1={x}
 								y1={y}
@@ -204,6 +204,17 @@
 								opacity="0.5"
 								stroke-width="0.2"
 							/>
+
+							<circle
+								cx={x}
+								cy={y}
+								fill="none"
+								stroke="black"
+								stroke-width="0.1"
+								opacity="0.2"
+								r={Math.sqrt( (positions[idx+1].x - x)**2 + (positions[idx+1].y - y)**2)}
+							/>
+
 							{#if idx == 2 * currentN}
 								<circle
 									cx={positions[idx + 1].x}
