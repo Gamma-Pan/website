@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Canvas } from '@threlte/core';
 	import Scene from './tiles/Scene.svelte';
-		
+	
 </script>
 
 <nav>
@@ -10,7 +10,11 @@
 			<span>Yiorgos Panagiotopoulos</span>
 		</div>
 		<div id="links">
-			<span class="nav-link"><a href="./fourier">links</a></span>
+			<span
+				role="link"
+				tabindex="0"
+				class="nav-link"><a href="./fourier">links</a></span
+			>
 			<span class="link-sep">/</span>
 			<span class="nav-link"><a href="./fourier">playground</a></span>
 			<span class="link-sep">/</span>
@@ -97,12 +101,12 @@
 	}
 
 	a:hover {
-		border: 1px solid red;
-		border-radius: 5px;
-		transition: border 1s;
+		color: hotpink;
+		transition: color 1s;
 	}
 
 	.canvas-container {
+		background-color: rgb(0,8,6);
 		position: absolute;
 		margin: 0;
 		width: 100%;
@@ -112,7 +116,6 @@
 
 	:global(html),
 	:global(body) {
-		background-color: lime;
 		margin: 0;
 		padding: 0;
 	}

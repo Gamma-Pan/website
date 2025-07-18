@@ -1,67 +1,67 @@
 <script lang="ts">
-	import { T, useTask } from '@threlte/core';
-	import { type IntersectionEvent } from '@threlte/extras';
-	import { getContext } from 'svelte';
-	import { Spring } from 'svelte/motion';
-	import * as THREE from 'three';
+	import { T } from '@threlte/core';
+	import { RoundedBoxGeometry, type IntersectionEvent } from '@threlte/extras';
+	import { Tween } from 'svelte/motion';
+	import { PointLight } from 'three';
+	const pi = Math.PI;
 
-	const {
-		id = Array(2),
-		position = undefined,
-		size = [0, 0, 0]
+	let {
+		position,
+		index,
+		active = $bindable(),
 	}: {
-		id: Array<number>;
-		position: THREE.Vector3 | undefined;
-		size: number[];
+		position: [number, number, number];
+		index: [number, number];
+		active: [number, number];
 	} = $props();
 
-	let heights = $state(getContext('heights') as Array<Array<number>>);
+	let castShadow = $state(true);
+	let receiveShadow = $state(true);
 
-	const [idx, jdx] = id;
-	let position_y = new Spring(0, { stiffness: 0.2  });
+	let d_height = $state(new Tween(0));
+	let emisive_intensity = $state(new Tween(0));
+	let emisive: undefined | string = $state(undefined);
 
-	let accum = 0;
-	let flag = 1;
-	const { start, stop } = useTask(
-		(delta) => {
-			accum += delta;
-			if (accum < 0.5 + Math.random()) return;
-			accum = 0;
-			flag = -flag;
-			position_y.set(heights[idx][jdx] + flag * Math.random() * 0.1, {
-				preserveMomentum: 100
-			});
-		},
-		{ autoStart: false }
-	);
+	function box_up(event: IntersectionEvent<PointerEvent>) {
+		d_height.target = 1.7;
+
+		active[0] = index[0]
+		active[1] = index[1]
+
+		castShadow = false;
+		receiveShadow = false;
+
+		emisive = 'pink';
+		emisive_intensity.target = 0.2;
+	}
 
 	$effect(() => {
-		const height = heights[idx][jdx];
-		position_y.set(height);
-		if (height > size[1] / 2) {
-			start();
-		} else {
-			stop();
+		if (index[0] != active[0] || index[1] != active[1]) {
+			emisive = undefined;
+			emisive_intensity.set(0);
+
+			d_height.set(0);
+
+			castShadow = true;
+			receiveShadow = true;
 		}
 	});
-
-	function handleclick(event: IntersectionEvent<PointerEvent>) {
-		if (event.faceIndex != 4) return;
-		if (heights[idx][jdx] == size[1]/2.1) {
-			heights[idx][jdx] = 0;
-		} else {
-			heights[idx][jdx] = size[1]/2.1; 
-		}
-		heights = heights;
-	}
 </script>
 
+<T.PointLight position={position} position.y = {position[1] +d_height.current} intensity={emisive_intensity.current} color='hotpink'/>
+
 <T.Mesh
-	position.x={position?.x}
-	position.y={position_y.current}
-	position.z={position?.z}
-	castShadow
+	onclick={box_up}
+	rotation.y={pi / 4}
+	{receiveShadow}
+	{castShadow}
+	{position}
+	position.y={position[1] + d_height.current}
 >
-	<T.BoxGeometry args={size} />
-	<T.MeshStandardMaterial color="rgb(125, 80, 128 )" />
+	<RoundedBoxGeometry args={[0.98, 1, 0.98]} radius={0.05} bevelSegments={3} />
+	<T.MeshPhongMaterial
+		color="#edcf9a"
+		emissive={emisive}
+		emissiveIntensity={emisive_intensity.current}
+	/>
 </T.Mesh>
